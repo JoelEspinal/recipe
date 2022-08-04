@@ -10,9 +10,7 @@ class CategoryRepository {
         Category("2", strCategory = "pasta", "image")
     )
 
-    fun categories():  MutableLiveData<List<Category?>> {
-       val liveData =  MutableLiveData<List<Category?>>()
-        liveData.value = mockedCategories
-        return liveData
+    fun categories(): List<Category> {
+        return mockedCategories
     }
 }

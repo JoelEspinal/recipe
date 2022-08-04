@@ -7,5 +7,9 @@ import com.example.myapplication.repositories.CategoryRepository
 
 class CategoriesViewModel(private val repository: CategoryRepository): ViewModel(){
 
-    val categories = repository.categories()
+    fun categories(): MutableLiveData<List<Category?>> {
+        val liveData =  MutableLiveData<List<Category?>>()
+        liveData.value = repository.categories()
+        return liveData
+    }
 }
