@@ -1,16 +1,38 @@
 package com.example.myapplication.repositories
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import com.example.myapplication.data.remote.recipeService
+import com.example.myapplication.data.remote.responses.CategoriesResponse
 import com.example.myapplication.models.Category
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class CategoryRepository {
 
-    private val mockedCategories = listOf<Category>(
-        Category(idCategory = "1", strCategory = "soup", "image"),
-        Category("2", strCategory = "pasta", "image")
-    )
-
     fun categories(): List<Category> {
-        return mockedCategories
+        var categories = listOf<Category>()
+
+       val call = recipeService.getCategories()
+
+        call.enqueue(
+            object : Callback<CategoriesResponse> {
+                override fun onResponse(
+                    call: Call<CategoriesResponse>,
+                    response: Response<CategoriesResponse>
+                ) {
+                    response.body()?.let { categories = it?.categories!! }
+
+                }
+
+                override fun onFailure(call: Call<CategoriesResponse>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            }
+        )
+
+        return categories
     }
 }

@@ -26,12 +26,18 @@ class CategoriesFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
 
-        activity?.let {
-            viewModel.categories().observe(it){ category ->
-                category.let {
+//        activity?.let {
+//            viewModel.categories().observe(it){ category ->
+//                category.let {
+//                    adapter.submitList(category)
+//                }
+//            }
+//        }
+
+        viewModel.categories().observe(activity!!) { category ->
+            category.let {
                     adapter.submitList(category)
                 }
-            }
         }
 
         return layout
