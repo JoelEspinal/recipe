@@ -29,16 +29,14 @@ class CategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_categories)
-        val adapter = CategoryAdapter(viewModel)
+        val adapter = activity?.let { CategoryAdapter(it, viewModel) }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
 
         activity?.let {
             viewModel.categories().observe(it) {
-                adapter.submitList(it)
+                adapter?.submitList(it)
             }
         }
-
-
     }
 }

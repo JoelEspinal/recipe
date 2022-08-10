@@ -1,5 +1,6 @@
 package com.example.myapplication.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.models.Category
 import com.example.myapplication.viewmodels.CategoriesViewModel
 
-class CategoryAdapter(private val categoryViewModel: CategoriesViewModel) : ListAdapter<Category, CategoryAdapter.CategoryViewHolder>(CATEGORY_COMPARATOR) {
+class CategoryAdapter(private val context: Context, private val categoryViewModel: CategoriesViewModel) : ListAdapter<Category, CategoryAdapter.CategoryViewHolder>(CATEGORY_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder.create(parent, categoryViewModel)
@@ -20,7 +22,7 @@ class CategoryAdapter(private val categoryViewModel: CategoriesViewModel) : List
 
     override fun onBindViewHolder(holder: CategoryAdapter.CategoryViewHolder, position: Int) {
         val currentCategory = getItem(position)
-        holder.bind(currentCategory, categoryViewModel)
+        holder.bind(context, currentCategory, categoryViewModel)
 
     }
 
@@ -28,8 +30,11 @@ class CategoryAdapter(private val categoryViewModel: CategoriesViewModel) : List
         private val categoryImageView: ImageView = itemView.findViewById(R.id.category_img)
         private val categoryTitle: TextView = itemView.findViewById(R.id.category_title)
 
-        fun bind(category: Category?, categoriesViewModel: CategoriesViewModel) {
+        fun bind(context: Context, category: Category?, categoriesViewModel: CategoriesViewModel) {
 //            categoryImageView.setImageResource(category?.strCategoryThumb)
+            Glide.with(context)
+                .load(category?.strCategoryThumb)
+                .into(categoryImageView)
             categoryTitle.text = category?.strCategory
             // TODO Redirect to category selected fragment acording to user click
         }
