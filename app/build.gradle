@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp' version '1.7.10-1.0.6'
 }
 
 android {
@@ -32,7 +33,14 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    applicationVariants.all { variant ->
+        variant.sourceSets.java.each {
+            it.srcDirs += "build/generated/ksp/${variant.name}/kotlin"
+        }
+    }
 }
+
 
 dependencies {
 
@@ -42,13 +50,29 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
+
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.google.code.gson:gson:2.9.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    
+
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Koin for Android
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+    // Koin Test
+    testImplementation "io.insert-koin:koin-test:$koin_version"
+    testImplementation "io.insert-koin:koin-test-junit4:$koin_version"
+
+
+// Java Compatibility
+    implementation "io.insert-koin:koin-android-compat:$koin_version"
+// Jetpack WorkManager
+    implementation "io.insert-koin:koin-androidx-workmanager:$koin_version"
+// Navigation Graph
+    implementation "io.insert-koin:koin-androidx-navigation:$koin_version"
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'

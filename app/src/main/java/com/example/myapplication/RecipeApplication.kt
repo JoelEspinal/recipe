@@ -1,7 +1,18 @@
 package com.example.myapplication
 
-import com.example.myapplication.repositories.CategoryRepository
+import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-class RecipeApplication {
-//    val ContactRepository by lazy { CategoryRepository() }
+class RecipeApplication: Application() {
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin{
+            androidLogger()
+            androidContext(this@RecipeApplication)
+            modules(appModule)
+        }
+    }
 }

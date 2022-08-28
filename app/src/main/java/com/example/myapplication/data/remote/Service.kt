@@ -8,4 +8,4 @@ var retrofit: Retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
     .build()
 
-var recipeService: RecipeService = retrofit.create(RecipeService::class.java)
+var recipeService: RecipeApi = retrofit.create(RecipeApi::class.java)

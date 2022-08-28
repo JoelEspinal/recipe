@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.adapters.CategoryAdapter
-import com.example.myapplication.repositories.CategoryRepository
 import com.example.myapplication.viewmodels.CategoriesViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CategoriesFragment : Fragment() {
-    private val viewModel = CategoriesViewModel(CategoryRepository())
+
+    private val categoriesViewModel : CategoriesViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,12 +29,11 @@ class CategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_categories)
-        val adapter = activity?.let { CategoryAdapter(it, viewModel) }
+        val adapter = activity?.let { CategoryAdapter(it, categoriesViewModel) }
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(activity, 2)
-
         activity?.let {
-            viewModel.categories().observe(it) {
+            categoriesViewModel.categories().observe(it) {
                 adapter?.submitList(it)
             }
         }
