@@ -12,16 +12,21 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val appModule = module {
-    single {
+    single<Retrofit> {
         Retrofit.Builder()
             .baseUrl("https://www.themealdb.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
+    single<RecipeApi> {
+        val retrofit: Retrofit = get()
+        retrofit.create(RecipeApi::class.java)
+    }
+
     factory<CategoryRepository>{ CategoryRepositoryImpl(get())}
 
-    factory { CategoriesViewModel(get()) }
+    single { CategoriesViewModel(get()) }
 
     factory { CategoriesFragment() }
 }
